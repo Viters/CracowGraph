@@ -5,6 +5,11 @@ public class Node {
     private long id;
     private double lon;
     private double lat;
+    private boolean isNode;
+
+    Node() {
+        isNode = false;
+    }
 
     public long getId() {
         return id;

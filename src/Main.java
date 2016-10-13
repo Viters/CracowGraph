@@ -16,7 +16,8 @@ public class Main {
             SAXParser saxParser = saxParserFactory.newSAXParser();
             OSMHandler osmHandler = new OSMHandler();
             saxParser.parse(input, osmHandler);
-            System.out.println(osmHandler.getFoundNodes().toString());
+            //System.out.println(osmHandler.getFoundNodes().toString());
+            System.out.println(osmHandler.getFoundWays());
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (SAXException e) {
