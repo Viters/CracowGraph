@@ -16,7 +16,6 @@ public class Way {
     }
 
     public long getId() {
-
         return id;
     }
 
