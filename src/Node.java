@@ -35,8 +35,11 @@ public class Node {
         this.lat = lat;
     }
 
-    @Override
-    public String toString() {
-        return "ID:" + id + " | LON: " + lon + " | LAT: " + lat;
+    public void confirmNode() {
+        isNode = true;
+    }
+
+    public boolean isConfirmed() {
+        return isNode;
     }
 }

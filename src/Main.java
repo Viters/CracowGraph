@@ -10,6 +10,10 @@ public class Main {
 
     public static void main(String[] args) {
         Map mapData = parseMapData("small.xml");
+
+        mapData.filter();
+
+        System.out.println(mapData.getNodesArray().size());
     }
 
     private static Map parseMapData(String inputName) {
