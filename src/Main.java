@@ -1,9 +1,10 @@
-import javax.xml.parsers.*;
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
+import org.xml.sax.SAXException;
 
-import java.util.*;
-import java.io.*;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.File;
+import java.io.IOException;
 
 public class Main {
 
@@ -13,9 +14,9 @@ public class Main {
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         try {
             SAXParser saxParser = saxParserFactory.newSAXParser();
-            NodeHandler nodeHandler = new NodeHandler();
-            saxParser.parse(input, nodeHandler);
-            System.out.println(nodeHandler.getFoundNodes().toString());
+            OSMHandler osmHandler = new OSMHandler();
+            saxParser.parse(input, osmHandler);
+            System.out.println(osmHandler.getFoundNodes().toString());
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (SAXException e) {
