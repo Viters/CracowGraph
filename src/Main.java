@@ -9,15 +9,20 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
-        File input = new File("small");
+        Map mapData = parseMapData("small.xml");
+    }
 
-        SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+    private static Map parseMapData(String inputName) {
+        File input = new File(inputName);
+        Map map = null;
+
         try {
+            SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
             SAXParser saxParser = saxParserFactory.newSAXParser();
             OSMHandler osmHandler = new OSMHandler();
             saxParser.parse(input, osmHandler);
-            //System.out.println(osmHandler.getFoundNodes().toString());
-            System.out.println(osmHandler.getFoundWays());
+
+            map = new Map(osmHandler.getFoundWays(), osmHandler.getFoundNodes());
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (SAXException e) {
@@ -25,5 +30,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return map;
     }
 }
