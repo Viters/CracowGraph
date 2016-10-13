@@ -13,7 +13,9 @@ public class Main {
 
         mapData.filter();
 
-        System.out.println(mapData.getNodesArray().size());
+        mapData.calculateDistances();
+
+        mapData.getWaysArray().values().forEach(v -> System.out.println(v.getDistance()));
     }
 
     private static Map parseMapData(String inputName) {
