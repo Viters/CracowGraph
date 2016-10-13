@@ -2,7 +2,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -11,7 +10,7 @@ import java.util.HashMap;
 public class OSMHandler extends DefaultHandler {
     String currentKey;
     private HashMap<Long, Node> foundNodes;
-    private HashMap<Long, ArrayList<Long>> foundWays;
+    private HashMap<Long, Way> foundWays;
     private boolean wayCurrentlyProcessed;
     private long wayCurrentId;
 
@@ -49,7 +48,7 @@ public class OSMHandler extends DefaultHandler {
         return foundNodes;
     }
 
-    public HashMap<Long, ArrayList<Long>> getFoundWays() {
+    public HashMap<Long, Way> getFoundWays() {
         return foundWays;
     }
 
@@ -64,12 +63,13 @@ public class OSMHandler extends DefaultHandler {
     private void processWay(Attributes attributes) {
         wayCurrentlyProcessed = true;
         wayCurrentId = Long.parseLong(attributes.getValue("id"));
-        ArrayList<Long> arrayList = new ArrayList<>();
-        foundWays.put(wayCurrentId, arrayList);
+        Way way = new Way();
+        way.setId(wayCurrentId);
+        foundWays.put(wayCurrentId, way);
     }
 
     private void processWayChild(Attributes attributes) {
         long currentWayChildId = Long.parseLong(attributes.getValue("ref"));
-        foundWays.get(wayCurrentId).add(currentWayChildId);
+        foundWays.get(wayCurrentId).getConnectedNodes().add(currentWayChildId);
     }
 }
