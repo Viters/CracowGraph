@@ -1,5 +1,4 @@
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Created by sir.viters on 13.10.2016.
@@ -22,20 +21,9 @@ public class Map {
     }
 
     public void filter() {
-        waysArray.forEach((k, v) -> {
-            int nodesNum = v.getConnectedNodes().size();
-            if (!v.getConnectedNodes().get(0).equals(v.getConnectedNodes().get(nodesNum - 1)))
-                v.getConnectedNodes().subList(1, nodesNum - 1).clear();
-        });
-
+        waysArray.values().removeIf(v -> !v.getConnectedNodes().get(0).equals(v.getConnectedNodes().get(v.getConnectedNodes().size() -  1)));
+        waysArray.values().forEach(v -> v.getConnectedNodes().subList(1, v.getConnectedNodes().size() - 1).clear());
         waysArray.forEach((k, v) -> v.getConnectedNodes().forEach(i -> nodesArray.get(i).confirmNode()));
-
-        Iterator<HashMap.Entry<Long, Node>> iter = nodesArray.entrySet().iterator();
-        while(iter.hasNext()) {
-            HashMap.Entry<Long, Node> entry = iter.next();
-            if (!entry.getValue().isConfirmed()) {
-                iter.remove();
-            }
-        }
+        nodesArray.values().removeIf(v -> !v.isConfirmed());
     }
 }
