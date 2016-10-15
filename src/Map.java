@@ -21,6 +21,7 @@ class Map {
     }
 
     void filter() {
+        waysArray.values().removeIf(v -> !Way.getAllowedTypes().contains(v.getType()));
         waysArray.values().removeIf(v -> v.getConnectedNodes().get(0).equals(v.getConnectedNodes().get(v.getConnectedNodes().size() -  1)));
         waysArray.values().forEach(v -> v.getConnectedNodes().subList(1, v.getConnectedNodes().size() - 1).clear());
         waysArray.values().forEach(v -> v.getConnectedNodes().forEach(i -> nodesArray.get(i).confirmNode()));

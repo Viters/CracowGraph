@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by sir.viters on 13.10.2016.
@@ -8,6 +10,12 @@ class Way {
     private ArrayList<Long> connectedNodes;
     private double distance;
     private String type;
+    private static List<String> allowedTypes = Arrays.asList(
+            "motorway", "trunk", "primary", "secondary",
+            "tertiary", "unclassified", "residential", "motorway_link",
+            "trunk_link", "primary_link", "secondary_link",
+            "tertiary_link", "living_street", "pedestrian"
+            );
 
     Way() {
         connectedNodes = new ArrayList<>();
@@ -51,5 +59,9 @@ class Way {
 
     ArrayList<Long> getConnectedNodes() {
         return connectedNodes;
+    }
+
+    static List<String> getAllowedTypes() {
+        return allowedTypes;
     }
 }

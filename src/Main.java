@@ -9,13 +9,13 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
-        Map mapData = parseMapData("small.xml");
+        Map mapData = parseMapData("map.xml");
 
         mapData.filter();
 
         mapData.calculateDistances();
 
-        mapData.getWaysArray().values().forEach(v -> System.out.println(v.getDistance()));
+        mapData.getWaysArray().values().forEach(v -> System.out.println(v.getDistance() + " " + v.getType()));
     }
 
     private static Map parseMapData(String inputName) {
@@ -29,11 +29,7 @@ public class Main {
             saxParser.parse(input, osmHandler);
 
             map = new Map(osmHandler.getFoundWays(), osmHandler.getFoundNodes());
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
 
