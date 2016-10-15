@@ -3,29 +3,30 @@ import java.util.ArrayList;
 /**
  * Created by sir.viters on 13.10.2016.
  */
-public class Way {
+class Way {
     private long id;
     private ArrayList<Long> connectedNodes;
     private double distance;
+    private String type;
 
     Way() {
         connectedNodes = new ArrayList<>();
         distance = 0;
     }
 
-    public void setId(long id) {
+    void setId(long id) {
         this.id = id;
     }
 
-    public long getId() {
+    long getId() {
         return id;
     }
 
-    public double getDistance() {
+    double getDistance() {
         return distance;
     }
 
-    public void calculateDistance(double lon1, double lat1, double lon2, double lat2) {
+    void calculateDistance(double lon1, double lat1, double lon2, double lat2) {
         double latDiff = lat2 - lat1;
         double lonDiff = lon2 - lon1;
         double latDistance = Math.toRadians(latDiff);
@@ -40,7 +41,15 @@ public class Way {
         this.distance = 6371 * c * 1000;
     }
 
-    public ArrayList<Long> getConnectedNodes() {
+    String getType() {
+        return type;
+    }
+
+    void setType(String type) {
+        this.type = type;
+    }
+
+    ArrayList<Long> getConnectedNodes() {
         return connectedNodes;
     }
 }

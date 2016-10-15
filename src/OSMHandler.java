@@ -3,18 +3,19 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Created by Viters on 2016-10-13.
  */
-public class OSMHandler extends DefaultHandler {
+class OSMHandler extends DefaultHandler {
     String currentKey;
     private HashMap<Long, Node> foundNodes;
     private HashMap<Long, Way> foundWays;
     private boolean wayCurrentlyProcessed;
     private long wayCurrentId;
 
-    public OSMHandler() {
+    OSMHandler() {
         foundNodes = new HashMap<>();
         foundWays = new HashMap<>();
     }
@@ -31,9 +32,12 @@ public class OSMHandler extends DefaultHandler {
         }
 
         if (wayCurrentlyProcessed) {
-            boolean foundWayChild = qName.equalsIgnoreCase("nd");
-            if (foundWayChild) {
-                processWayChild(attributes);
+            boolean foundWayChildNode = qName.equalsIgnoreCase("nd");
+            boolean foundWayChildTag = qName.equalsIgnoreCase("tag");
+            if (foundWayChildNode) {
+                processWayChildNode(attributes);
+            } else if (foundWayChildTag) {
+                processWayChildTag(attributes);
             }
         }
     }
@@ -44,20 +48,12 @@ public class OSMHandler extends DefaultHandler {
             wayCurrentlyProcessed = false;
     }
 
-    public HashMap<Long, Node> getFoundNodes() {
+    HashMap<Long, Node> getFoundNodes() {
         return foundNodes;
     }
 
-    public HashMap<Long, Way> getFoundWays() {
+    HashMap<Long, Way> getFoundWays() {
         return foundWays;
-    }
-
-    private void processNode(Attributes attributes) {
-        Node node = new Node();
-        node.setId(Long.parseLong(attributes.getValue("id")));
-        node.setLat(Double.parseDouble(attributes.getValue("lat")));
-        node.setLon(Double.parseDouble(attributes.getValue("lon")));
-        foundNodes.put(node.getId(), node);
     }
 
     private void processWay(Attributes attributes) {
@@ -68,8 +64,25 @@ public class OSMHandler extends DefaultHandler {
         foundWays.put(wayCurrentId, way);
     }
 
-    private void processWayChild(Attributes attributes) {
+    private void processNode (Attributes attributes){
+        Node node = new Node();
+        node.setId(Long.parseLong(attributes.getValue("id")));
+        node.setLat(Double.parseDouble(attributes.getValue("lat")));
+        node.setLon(Double.parseDouble(attributes.getValue("lon")));
+        foundNodes.put(node.getId(), node);
+    }
+
+    private void processWayChildNode(Attributes attributes) {
         long currentWayChildId = Long.parseLong(attributes.getValue("ref"));
         foundWays.get(wayCurrentId).getConnectedNodes().add(currentWayChildId);
     }
+
+    private void processWayChildTag(Attributes attributes){
+        if (!Objects.equals(attributes.getValue("k"), "highway"))
+            return;
+
+        String currentWayType = attributes.getValue("v");
+        foundWays.get(wayCurrentId).setType(currentWayType);
+    }
+
 }
