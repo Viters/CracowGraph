@@ -13,10 +13,12 @@ class Node {
      * from Map. Nodes that connect different streets should
      * be confirmed before Map filtering.
      */
-    private boolean isNode;
+    private int occurrences;
+    private boolean isEdge;
 
     Node() {
-        isNode = false;
+        occurrences = 0;
+        isEdge = false;
     }
 
     long getId() {
@@ -43,11 +45,15 @@ class Node {
         this.lat = lat;
     }
 
-    void confirmNode() {
-        isNode = true;
+    void addOccurence() {
+        ++occurrences;
+    }
+
+    void confirmEdge() {
+        isEdge = true;
     }
 
     boolean isConfirmed() {
-        return isNode;
+        return occurrences > 1 || isEdge;
     }
 }

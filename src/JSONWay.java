@@ -22,8 +22,8 @@ class JSONWay {
     JSONWay(Way way, Map map) {
         startLon = map.getNodesArray().get(way.getFirstNodeId()).getLon();
         startLat = map.getNodesArray().get(way.getFirstNodeId()).getLat();
-        endLat = map.getNodesArray().get(way.getLastNodeId()).getLon();
-        endLon = map.getNodesArray().get(way.getLastNodeId()).getLat();
+        endLon = map.getNodesArray().get(way.getLastNodeId()).getLon();
+        endLat = map.getNodesArray().get(way.getLastNodeId()).getLat();
         distance = way.getDistance();
         type = way.getType();
     }

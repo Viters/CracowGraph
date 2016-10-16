@@ -39,17 +39,20 @@ class Map {
         // Remove all non allowed street types
         waysArray.values().removeIf(v -> !Way.getAllowedTypes().contains(v.getType()));
 
-        // Remove all streets that are loops
-        waysArray.values().removeIf(v -> v.getFirstNodeId().equals(v.getLastNodeId()));
+        // Get nodes from waysArray and confirm their occurences in nodesArray
+        waysArray.values().forEach(v -> v.getConnectedNodes().forEach(i -> nodesArray.get(i).addOccurence()));
 
-        // Remove all nodes between first and last
-        waysArray.values().forEach(v -> v.getConnectedNodes().subList(1, v.getConnectedNodes().size() - 1).clear());
-
-        // Get all remaining nodes from waysArray and confirm them in nodesArray
-        waysArray.values().forEach(v -> v.getConnectedNodes().forEach(i -> nodesArray.get(i).confirmNode()));
+        // Get first and last segment of each street and mark them as edges
+        waysArray.values().forEach(v -> {
+            nodesArray.get(v.getFirstNodeId()).confirmEdge();
+            nodesArray.get(v.getLastNodeId()).confirmEdge();
+        });
 
         // Remove all non-confirmed nodes from nodesArray
         nodesArray.values().removeIf(v -> !v.isConfirmed());
+
+        // Remove all non-existent nodes from Ways objects
+        waysArray.values().forEach(v -> v.getConnectedNodes().removeIf(i -> !nodesArray.containsKey(i)));
     }
 
     /**
