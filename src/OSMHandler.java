@@ -5,7 +5,6 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.util.HashMap;
 import java.util.Objects;
 
-
 /**
  * Class for handling Open Street Map XML files.
  * It will search through them and create two HashMaps,

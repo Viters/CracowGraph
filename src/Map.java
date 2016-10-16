@@ -9,7 +9,7 @@ import java.util.HashMap;
 /**
  * Main data holding structure. It holds all Ways and Nodes object extracted from XML.
  * <p>
- * Putting them into HashMaps is useful for achieving O(1) finding complexity.
+ * Putting them into HashMaps is useful for achieving small searching complexity.
  * Also this class will perform all operations to process all data into requested output structure.
  *
  * @author Łukasz Szcześniak
