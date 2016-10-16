@@ -1,45 +1,53 @@
 /**
- * Created by Viters on 2016-10-13.
+ * This class is responsible for holding data about street connections.
+ *
+ * @author Łukasz Szcześniak
+ * @version 20161016
  */
 public class Node {
     private long id;
     private double lon;
     private double lat;
+    /**
+     * By default Node object is not confirmed and will be deleted
+     * from Map. Nodes that connect different streets should
+     * be confirmed before Map filtering.
+     */
     private boolean isNode;
 
     Node() {
         isNode = false;
     }
 
-    public long getId() {
+    long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    void setId(long id) {
         this.id = id;
     }
 
-    public double getLon() {
+    double getLon() {
         return lon;
     }
 
-    public void setLon(double lon) {
+    void setLon(double lon) {
         this.lon = lon;
     }
 
-    public double getLat() {
+    double getLat() {
         return lat;
     }
 
-    public void setLat(double lat) {
+    void setLat(double lat) {
         this.lat = lat;
     }
 
-    public void confirmNode() {
+    void confirmNode() {
         isNode = true;
     }
 
-    public boolean isConfirmed() {
+    boolean isConfirmed() {
         return isNode;
     }
 }
