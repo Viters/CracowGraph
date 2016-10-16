@@ -1,3 +1,6 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 /**
@@ -32,7 +35,45 @@ class Map {
         waysArray.values().forEach(v -> {
             Node start = nodesArray.get(v.getConnectedNodes().get(0));
             Node end = nodesArray.get(v.getConnectedNodes().get(1));
-            v.calculateDistance(start.getLon(), start.getLat(), end.getLon(), end.getLat());
+            v.calculateDistance(start, end);
         });
+    }
+
+    void export() throws FileNotFoundException, UnsupportedEncodingException {
+        PrintWriter writer = new PrintWriter("output.json", "UTF-8");
+        writer.println("[");
+
+        int i = 1;
+        for (Way v : waysArray.values()) {
+            JSONWay data = new JSONWay(v, this);
+            writer.println("\t{");
+
+            writer.print("\t\t\"startLat\": ");
+            writer.print("\"" + data.getStartLat() + "\",\n");
+
+            writer.print("\t\t\"startLon\": ");
+            writer.print("\"" + data.getStartLon() + "\",\n");
+
+            writer.print("\t\t\"endLat\": ");
+            writer.print("\"" + data.getEndLat() + "\",\n");
+
+            writer.print("\t\t\"endLon\": ");
+            writer.print("\"" + data.getEndLon() + "\",\n");
+
+            writer.print("\t\t\"distance\": ");
+            writer.print("\"" + data.getDistance() + "\",\n");
+
+            writer.print("\t\t\"type\": ");
+            writer.print("\"" + data.getType() + "\"\n");
+
+            if (i++ != waysArray.values().size())
+                writer.println("\t},");
+            else
+                writer.println("\t}");
+        }
+
+        writer.println("]");
+
+        writer.close();
     }
 }

@@ -4,7 +4,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 public class Main {
 
@@ -15,7 +17,11 @@ public class Main {
 
         mapData.calculateDistances();
 
-        mapData.getWaysArray().values().forEach(v -> System.out.println(v.getDistance() + " " + v.getType()));
+        try {
+            mapData.export();
+        } catch (FileNotFoundException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     private static Map parseMapData(String inputName) {

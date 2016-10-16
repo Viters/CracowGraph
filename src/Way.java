@@ -34,7 +34,12 @@ class Way {
         return distance;
     }
 
-    void calculateDistance(double lon1, double lat1, double lon2, double lat2) {
+    void calculateDistance(Node start, Node end) {
+        double lon1 = start.getLon();
+        double lat1 = start.getLat();
+        double lon2 = end.getLon();
+        double lat2 = end.getLat();
+
         double latDiff = lat2 - lat1;
         double lonDiff = lon2 - lon1;
         double latDistance = Math.toRadians(latDiff);
