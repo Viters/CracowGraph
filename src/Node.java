@@ -4,7 +4,7 @@
  * @author Łukasz Szcześniak
  * @version 20161016
  */
-public class Node {
+class Node {
     private long id;
     private double lon;
     private double lat;
