@@ -1,5 +1,9 @@
 /**
- * Created by sir.viters on 16.10.2016.
+ * Object of this class is ready to be saved as JSON object.
+ * It maps Way and Map objects to a single object with requested values.
+ *
+ * @author Łukasz Szcześniak
+ * @version 20161016
  */
 class JSONWay {
     private double startLon;
@@ -9,11 +13,17 @@ class JSONWay {
     private double distance;
     private String type;
 
+    /**
+     * Create JSONWay object and set requested values.
+     *
+     * @param way - object that will be mapped
+     * @param map - object that provides additional information needed for mapping process
+     */
     JSONWay(Way way, Map map) {
-        startLon = map.getNodesArray().get(way.getConnectedNodes().get(0)).getLon();
-        startLat = map.getNodesArray().get(way.getConnectedNodes().get(0)).getLat();
-        endLat = map.getNodesArray().get(way.getConnectedNodes().get(1)).getLon();
-        endLon = map.getNodesArray().get(way.getConnectedNodes().get(1)).getLat();
+        startLon = map.getNodesArray().get(way.getFirstNodeId()).getLon();
+        startLat = map.getNodesArray().get(way.getFirstNodeId()).getLat();
+        endLat = map.getNodesArray().get(way.getLastNodeId()).getLon();
+        endLon = map.getNodesArray().get(way.getLastNodeId()).getLat();
         distance = way.getDistance();
         type = way.getType();
     }
@@ -38,7 +48,7 @@ class JSONWay {
         return distance;
     }
 
-    public String getType() {
+    String getType() {
         return type;
     }
 }
