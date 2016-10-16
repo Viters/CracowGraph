@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
  * Class for operations on Open Street Map street data.
  * It does not hold actual Node data, only referenced to it via ID.
@@ -25,7 +24,7 @@ class Way {
             "tertiary", "unclassified", "residential", "motorway_link",
             "trunk_link", "primary_link", "secondary_link",
             "tertiary_link", "living_street", "pedestrian"
-            );
+    );
 
     Way() {
         connectedNodes = new ArrayList<>();
@@ -48,8 +47,7 @@ class Way {
      * Calculates distance between two nodes using haversine formula.
      *
      * @param start - first segment of street
-     * @param end - last segment of street
-     *
+     * @param end   - last segment of street
      * @see <a href="http://www.movable-type.co.uk/scripts/latlong.html">Haversine formula</a>
      */
     void setDistance(Node start, Node end) {
