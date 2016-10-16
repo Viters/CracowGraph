@@ -4,7 +4,13 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 /**
- * Created by sir.viters on 13.10.2016.
+ * Main data holding structure. It holds all Ways and Nodes object extracted from XML.
+ * <p>
+ * Putting them into HashMaps is useful for achieving O(1) finding complexity.
+ * Also this class will perform all operations to process all data into requested output structure.
+ *
+ * @author Łukasz Szcześniak
+ * @version 20161016
  */
 class Map {
     private HashMap<Long, Way> waysArray;
@@ -23,24 +29,46 @@ class Map {
         return nodesArray;
     }
 
+    /**
+     * Filter data using strict predicates.
+     */
     void filter() {
+        // Remove all non allowed street types
         waysArray.values().removeIf(v -> !Way.getAllowedTypes().contains(v.getType()));
-        waysArray.values().removeIf(v -> v.getConnectedNodes().get(0).equals(v.getConnectedNodes().get(v.getConnectedNodes().size() -  1)));
+
+        // Remove all streets that are loops
+        waysArray.values().removeIf(v -> v.getFirstNodeId().equals(v.getLastNodeId()));
+
+        // Remove all nodes between first and last
         waysArray.values().forEach(v -> v.getConnectedNodes().subList(1, v.getConnectedNodes().size() - 1).clear());
+
+        // Get all remaining nodes from waysArray and confirm them in nodesArray
         waysArray.values().forEach(v -> v.getConnectedNodes().forEach(i -> nodesArray.get(i).confirmNode()));
+
+        // Remove all non-confirmed nodes from nodesArray
         nodesArray.values().removeIf(v -> !v.isConfirmed());
     }
 
+    /**
+     * Calculate way for each Way object in waysArray.
+     */
     void calculateDistances() {
         waysArray.values().forEach(v -> {
-            Node start = nodesArray.get(v.getConnectedNodes().get(0));
-            Node end = nodesArray.get(v.getConnectedNodes().get(1));
-            v.calculateDistance(start, end);
+            Node start = nodesArray.get(v.getFirstNodeId());
+            Node end = nodesArray.get(v.getLastNodeId());
+            v.setDistance(start, end);
         });
     }
 
-    void export() throws FileNotFoundException, UnsupportedEncodingException {
-        PrintWriter writer = new PrintWriter("output.json", "UTF-8");
+    /**
+     * Export Map data into requested JSON structure.
+     *
+     * @param name - output file name
+     * @throws FileNotFoundException
+     * @throws UnsupportedEncodingException
+     */
+    void export(String name) throws FileNotFoundException, UnsupportedEncodingException {
+        PrintWriter writer = new PrintWriter(name, "UTF-8");
         writer.println("[");
 
         int i = 1;
@@ -73,7 +101,6 @@ class Map {
         }
 
         writer.println("]");
-
         writer.close();
     }
 }
