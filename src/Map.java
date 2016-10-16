@@ -1,6 +1,9 @@
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.*;
 import java.util.HashMap;
 
 /**
@@ -63,7 +66,7 @@ class Map {
     /**
      * Export Map data into requested JSON structure.
      *
-     * @param name - output file name
+     * @param name - output file path
      * @throws FileNotFoundException
      * @throws UnsupportedEncodingException
      */
@@ -102,5 +105,29 @@ class Map {
 
         writer.println("]");
         writer.close();
+    }
+
+    /**
+     * Parse XML file to retrive requested informations and store them into Map object.
+     *
+     * @param inputName - XML Open Street Map file path
+     * @return Map data structure holding all nodes and ways extracted from provided XML file
+     */
+    static Map parseMapData(String inputName) {
+        File input = new File(inputName);
+        Map map = null;
+
+        try {
+            SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+            SAXParser saxParser = saxParserFactory.newSAXParser();
+            OSMHandler osmHandler = new OSMHandler();
+            saxParser.parse(input, osmHandler);
+
+            map = new Map(osmHandler.getFoundWays(), osmHandler.getFoundNodes());
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+
+        return map;
     }
 }
