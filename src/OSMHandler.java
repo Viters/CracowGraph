@@ -108,7 +108,7 @@ class OSMHandler extends DefaultHandler {
         Long id = Long.parseLong(attributes.getValue("id"));
         Double lat = Double.parseDouble(attributes.getValue("lat"));
         Double lon = Double.parseDouble(attributes.getValue("lon"));
-        foundNodes.put(id, new Node(lat, lon));
+        foundNodes.put(id, new Node(id, lat, lon));
     }
 
     /**

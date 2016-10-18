@@ -1,3 +1,5 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -67,44 +69,11 @@ class Map {
      */
     void export(String name) throws FileNotFoundException, UnsupportedEncodingException {
         PrintWriter writer = new PrintWriter(name, "UTF-8");
-        writer.println("[");
 
-        int i = 1;
-        for (Way v : waysArray.values()) {
-            JSONWay data = new JSONWay(v);
-            writer.println("\t{");
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JSONData data = new JSONData(this);
+        gson.toJson(data, writer);
 
-            writer.print("\t\t\"startLat\": ");
-            writer.print("\"" + data.getStartLat() + "\",\n");
-
-            writer.print("\t\t\"startLon\": ");
-            writer.print("\"" + data.getStartLon() + "\",\n");
-
-            writer.print("\t\t\"endLat\": ");
-            writer.print("\"" + data.getEndLat() + "\",\n");
-
-            writer.print("\t\t\"endLon\": ");
-            writer.print("\"" + data.getEndLon() + "\",\n");
-
-            writer.print("\t\t\"distance\": ");
-            writer.print("\"" + data.getDistance() + "\",\n");
-
-            writer.print("\t\t\"type\": ");
-            writer.print("\"" + data.getType() + ",\"\n");
-
-            writer.print("\t\t\"name\": ");
-            writer.print("\"" + data.getName() + ",\"\n");
-
-            writer.print("\t\t\"roundabout\": ");
-            writer.print("\"" + data.isRoundabout() + "\"\n");
-
-            if (i++ != waysArray.values().size())
-                writer.println("\t},");
-            else
-                writer.println("\t}");
-        }
-
-        writer.println("]");
         writer.close();
     }
 
@@ -130,5 +99,13 @@ class Map {
         }
 
         return map;
+    }
+
+    HashMap<Long, Way> getWaysArray() {
+        return waysArray;
+    }
+
+    HashMap<Long, Node> getNodesArray() {
+        return nodesArray;
     }
 }

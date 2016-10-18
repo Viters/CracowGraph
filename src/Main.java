@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 public class Main {
 
     public static void main(String[] args) {
-        Map mapData = Map.parseMapData("map.xml");
+        Map mapData = Map.parseMapData("small.xml");
 
         mapData.filter();
 

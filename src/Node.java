@@ -5,6 +5,7 @@
  * @version 20161016
  */
 class Node {
+    final private long id;
     final private double lon;
     final private double lat;
     /**
@@ -15,11 +16,16 @@ class Node {
     private int occurrences;
     private boolean isEdge;
 
-    Node(double lon, double lat) {
+    Node(long id, double lon, double lat) {
+        this.id = id;
         this.lon = lon;
         this.lat = lat;
         occurrences = 0;
         isEdge = false;
+    }
+
+    long getId() {
+        return id;
     }
 
     double getLon() {
