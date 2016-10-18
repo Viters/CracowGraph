@@ -6,12 +6,14 @@
  * @version 20161016
  */
 class JSONWay {
-    private double startLon;
-    private double startLat;
-    private double endLon;
-    private double endLat;
-    private double distance;
-    private String type;
+    final private double startLon;
+    final private double startLat;
+    final private double endLon;
+    final private double endLat;
+    final private double distance;
+    final private String type;
+    final private String name;
+    final private boolean isRoundabout;
 
     /**
      * Create JSONWay object and set requested values.
@@ -19,13 +21,15 @@ class JSONWay {
      * @param way - object that will be mapped
      * @param map - object that provides additional information needed for mapping process
      */
-    JSONWay(Way way, Map map) {
-        startLon = map.getNodesArray().get(way.getFirstNodeId()).getLon();
-        startLat = map.getNodesArray().get(way.getFirstNodeId()).getLat();
-        endLon = map.getNodesArray().get(way.getLastNodeId()).getLon();
-        endLat = map.getNodesArray().get(way.getLastNodeId()).getLat();
+    JSONWay(Way way) {
+        startLon = way.getFirstNode().getLon();
+        startLat = way.getLastNode().getLat();
+        endLon = way.getLastNode().getLon();
+        endLat = way.getLastNode().getLat();
         distance = way.getDistance();
         type = way.getType();
+        name = way.getName();
+        isRoundabout = way.isRoundabout();
     }
 
     double getStartLon() {
@@ -50,5 +54,13 @@ class JSONWay {
 
     String getType() {
         return type;
+    }
+
+    String getName() {
+        return name;
+    }
+
+    boolean isRoundabout() {
+        return isRoundabout;
     }
 }

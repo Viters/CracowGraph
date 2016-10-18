@@ -105,11 +105,10 @@ class OSMHandler extends DefaultHandler {
      * @param attributes - The attributes attached to the element. If there are no attributes, it shall be an empty Attributes object.
      */
     private void processNode(Attributes attributes) {
-        Node node = new Node();
-        node.setId(Long.parseLong(attributes.getValue("id")));
-        node.setLat(Double.parseDouble(attributes.getValue("lat")));
-        node.setLon(Double.parseDouble(attributes.getValue("lon")));
-        foundNodes.put(node.getId(), node);
+        Long id = Long.parseLong(attributes.getValue("id"));
+        Double lat = Double.parseDouble(attributes.getValue("lat"));
+        Double lon = Double.parseDouble(attributes.getValue("lon"));
+        foundNodes.put(id, new Node(lat, lon));
     }
 
     /**
@@ -119,7 +118,7 @@ class OSMHandler extends DefaultHandler {
      */
     private void processWayChildNode(Attributes attributes) {
         long currentWayChildId = Long.parseLong(attributes.getValue("ref"));
-        foundWays.get(wayCurrentId).getConnectedNodes().add(currentWayChildId);
+        foundWays.get(wayCurrentId).getConnectedNodes().add(foundNodes.get(currentWayChildId));
     }
 
     /**
@@ -128,11 +127,20 @@ class OSMHandler extends DefaultHandler {
      * @param attributes - The attributes attached to the element. If there are no attributes, it shall be an empty Attributes object.
      */
     private void processWayChildTag(Attributes attributes) {
-        if (!Objects.equals(attributes.getValue("k"), "highway"))
-            return;
+        if (Objects.equals(attributes.getValue("k"), "highway")) {
+            String currentWayType = attributes.getValue("v");
+            foundWays.get(wayCurrentId).setType(currentWayType);
+        }
 
-        String currentWayType = attributes.getValue("v");
-        foundWays.get(wayCurrentId).setType(currentWayType);
+        if (Objects.equals(attributes.getValue("k"), "name")) {
+            String currentWayName = attributes.getValue("v");
+            foundWays.get(wayCurrentId).setName(currentWayName);
+        }
+
+        if (Objects.equals(attributes.getValue("k"), "junction")) {
+            String junctionType = attributes.getValue("v");
+            foundWays.get(wayCurrentId).setRoundabout(Objects.equals(junctionType, "roundabout"));
+        }
     }
 
 }

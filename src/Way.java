@@ -11,9 +11,11 @@ import java.util.List;
  */
 class Way {
     private long id;
-    private ArrayList<Long> connectedNodes;
+    private ArrayList<Node> connectedNodes;
     private double distance;
     private String type;
+    private String name;
+    private boolean isRoundabout;
     /**
      * Street types that will NOT be deleted while Map filtering.
      *
@@ -29,6 +31,8 @@ class Way {
     Way() {
         connectedNodes = new ArrayList<>();
         distance = 0;
+        name = "Bez nazwy";
+        isRoundabout = false;
     }
 
     void setId(long id) {
@@ -78,19 +82,35 @@ class Way {
         this.type = type;
     }
 
-    ArrayList<Long> getConnectedNodes() {
+    ArrayList<Node> getConnectedNodes() {
         return connectedNodes;
     }
 
-    Long getFirstNodeId() {
+    Node getFirstNode() {
         return connectedNodes.get(0);
     }
 
-    Long getLastNodeId() {
+    Node getLastNode() {
         return connectedNodes.get(connectedNodes.size() - 1);
     }
 
     static List<String> getAllowedTypes() {
         return allowedTypes;
+    }
+
+    String getName() {
+        return name;
+    }
+
+    void setName(String name) {
+        this.name = name;
+    }
+
+    boolean isRoundabout() {
+        return isRoundabout;
+    }
+
+    void setRoundabout(boolean roundabout) {
+        isRoundabout = roundabout;
     }
 }

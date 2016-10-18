@@ -5,9 +5,8 @@
  * @version 20161016
  */
 class Node {
-    private long id;
-    private double lon;
-    private double lat;
+    final private double lon;
+    final private double lat;
     /**
      * By default Node object is not confirmed and will be deleted
      * from Map. Nodes that connect different streets should
@@ -16,33 +15,19 @@ class Node {
     private int occurrences;
     private boolean isEdge;
 
-    Node() {
+    Node(double lon, double lat) {
+        this.lon = lon;
+        this.lat = lat;
         occurrences = 0;
         isEdge = false;
-    }
-
-    long getId() {
-        return id;
-    }
-
-    void setId(long id) {
-        this.id = id;
     }
 
     double getLon() {
         return lon;
     }
 
-    void setLon(double lon) {
-        this.lon = lon;
-    }
-
     double getLat() {
         return lat;
-    }
-
-    void setLat(double lat) {
-        this.lat = lat;
     }
 
     void addOccurence() {
@@ -53,7 +38,7 @@ class Node {
         isEdge = true;
     }
 
-    boolean isConfirmed() {
+    final boolean isConfirmed() {
         return occurrences > 1 || isEdge;
     }
 }

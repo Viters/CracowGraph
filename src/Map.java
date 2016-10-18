@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 /**
  * Main data holding structure. It holds all Ways and Nodes object extracted from XML.
- *
+ * <p>
  * Putting them into HashMaps is useful for achieving small searching complexity.
  * Also this class will perform all operations to process all data into requested output structure.
  *
@@ -19,17 +19,9 @@ class Map {
     private HashMap<Long, Way> waysArray;
     private HashMap<Long, Node> nodesArray;
 
-    Map(HashMap<Long, Way> waysArray, HashMap<Long, Node> nodesArray) {
+    private Map(HashMap<Long, Way> waysArray, HashMap<Long, Node> nodesArray) {
         this.waysArray = waysArray;
         this.nodesArray = nodesArray;
-    }
-
-    HashMap<Long, Way> getWaysArray() {
-        return waysArray;
-    }
-
-    HashMap<Long, Node> getNodesArray() {
-        return nodesArray;
     }
 
     /**
@@ -37,33 +29,33 @@ class Map {
      */
     void filter() {
         // Remove all non allowed street types
-        waysArray.values().removeIf(v -> !Way.getAllowedTypes().contains(v.getType()));
+        waysArray.values().removeIf(v -> !(Way.getAllowedTypes().contains(v.getType()) || v.isRoundabout()));
 
         // Get nodes from waysArray and confirm their occurences in nodesArray
-        waysArray.values().forEach(v -> v.getConnectedNodes().forEach(i -> nodesArray.get(i).addOccurence()));
+        waysArray.values().forEach(v -> v.getConnectedNodes().forEach(Node::addOccurence));
 
         // Get first and last segment of each street and mark them as edges
         waysArray.values().forEach(v -> {
-            nodesArray.get(v.getFirstNodeId()).confirmEdge();
-            nodesArray.get(v.getLastNodeId()).confirmEdge();
+            v.getFirstNode().confirmEdge();
+            v.getLastNode().confirmEdge();
         });
 
         // Remove all non-confirmed nodes from nodesArray
         nodesArray.values().removeIf(v -> !v.isConfirmed());
 
         // Remove all non-existent nodes from Ways objects
-        waysArray.values().forEach(v -> v.getConnectedNodes().removeIf(i -> !nodesArray.containsKey(i)));
+        waysArray.values().forEach(v -> v.getConnectedNodes().removeIf(i -> !i.isConfirmed()));
+
+        waysArray.values().removeIf(v -> v.getFirstNode() == v.getLastNode() && !v.isRoundabout());
+
+        System.out.println("Processed: " + waysArray.size());
     }
 
     /**
      * Calculate way for each Way object in waysArray.
      */
     void calculateDistances() {
-        waysArray.values().forEach(v -> {
-            Node start = nodesArray.get(v.getFirstNodeId());
-            Node end = nodesArray.get(v.getLastNodeId());
-            v.setDistance(start, end);
-        });
+        waysArray.values().forEach(v -> v.setDistance(v.getFirstNode(), v.getLastNode()));
     }
 
     /**
@@ -79,7 +71,7 @@ class Map {
 
         int i = 1;
         for (Way v : waysArray.values()) {
-            JSONWay data = new JSONWay(v, this);
+            JSONWay data = new JSONWay(v);
             writer.println("\t{");
 
             writer.print("\t\t\"startLat\": ");
@@ -98,7 +90,13 @@ class Map {
             writer.print("\"" + data.getDistance() + "\",\n");
 
             writer.print("\t\t\"type\": ");
-            writer.print("\"" + data.getType() + "\"\n");
+            writer.print("\"" + data.getType() + ",\"\n");
+
+            writer.print("\t\t\"name\": ");
+            writer.print("\"" + data.getName() + ",\"\n");
+
+            writer.print("\t\t\"roundabout\": ");
+            writer.print("\"" + data.isRoundabout() + "\"\n");
 
             if (i++ != waysArray.values().size())
                 writer.println("\t},");
