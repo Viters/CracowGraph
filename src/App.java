@@ -1,10 +1,13 @@
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 
-public class Main {
+public class App {
 
     public static void main(String[] args) {
-        Map mapData = Map.parseMapData("small.xml");
+        Map mapData;
+
+        mapData = Map.parseMapData("big.xml");
+
 
         mapData.filter();
 

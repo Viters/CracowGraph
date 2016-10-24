@@ -30,6 +30,9 @@ class Map {
      * Filter data using strict predicates.
      */
     void filter() {
+        System.out.println("Start ways: " + waysArray.size());
+        System.out.println("Start nodes: " + nodesArray.size());
+
         // Remove all non allowed street types
         waysArray.values().removeIf(v -> !(Way.getAllowedTypes().contains(v.getType()) || v.isRoundabout()));
 
@@ -50,7 +53,8 @@ class Map {
 
         waysArray.values().removeIf(v -> v.getFirstNode() == v.getLastNode() && !v.isRoundabout());
 
-        System.out.println("Processed: " + waysArray.size());
+        System.out.println("Final ways: " + waysArray.size());
+        System.out.println("Final nodes: " + nodesArray.size());
     }
 
     /**
