@@ -61,7 +61,7 @@ class Map {
      * Calculate way for each Way object in waysArray.
      */
     void calculateDistances() {
-        waysArray.values().forEach(v -> v.setDistance(v.getFirstNode(), v.getLastNode()));
+        waysArray.values().forEach(Way::setDistance);
     }
 
     /**

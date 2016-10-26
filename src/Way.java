@@ -50,28 +50,32 @@ class Way {
     /**
      * Calculates distance between two nodes using haversine formula.
      *
-     * @param start - first segment of street
-     * @param end   - last segment of street
      * @see <a href="http://www.movable-type.co.uk/scripts/latlong.html">Haversine formula</a>
      */
-    void setDistance(Node start, Node end) {
-        double lon1 = start.getLon();
-        double lat1 = start.getLat();
-        double lon2 = end.getLon();
-        double lat2 = end.getLat();
+    void setDistance() {
+        double tempDist = 0;
 
-        double latDiff = lat2 - lat1;
-        double lonDiff = lon2 - lon1;
-        double latDistance = Math.toRadians(latDiff);
-        double lngDistance = Math.toRadians(lonDiff);
+        for (int i = 0; i < connectedNodes.size() - 1; ++i) {
+            double lon1 = connectedNodes.get(i).getLon();
+            double lat1 = connectedNodes.get(i).getLat();
+            double lon2 = connectedNodes.get(i + 1).getLon();
+            double lat2 = connectedNodes.get(i + 1).getLat();
 
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(lat1))
-                * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
+            double latDiff = lat2 - lat1;
+            double lonDiff = lon2 - lon1;
+            double latDistance = Math.toRadians(latDiff);
+            double lngDistance = Math.toRadians(lonDiff);
 
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                    + Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(lat1))
+                    * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
 
-        this.distance = 6371 * c * 1000;
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+            tempDist += c;
+        }
+
+        this.distance = 6371 * tempDist * 1000;
     }
 
     String getType() {

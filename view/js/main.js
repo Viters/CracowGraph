@@ -6,7 +6,6 @@ var data = JSON.parse(request.responseText);
 normalizeData();
 
 var stage = new createjs.Stage("canvas");
-stage.enableMouseOver(100);
 var nodesList = [];
 var waysList = [];
 
@@ -37,9 +36,11 @@ data["ways"].forEach(w => {
 waysList.forEach(n => stage.addChild(n));
 nodesList.forEach(n => stage.addChild(n));
 
-waysList.forEach(n => n.on("mouseover", function() {
-    document.getElementById('tooltip').innerHTML ="Ta ulica nazywa się: " + this.data.name + "<br>Jest typu: " + this.data.type + "<br>Długość tego odcinka wynosi: " + this.data.distance + "m";
+waysList.forEach(n => n.on("click", function() {
+    document.getElementById('tooltip').innerHTML ="Ta ulica nazywa się: " + this.data.name + "<br>Jest typu: " + this.data.type + "<br>Długość tej ulicy wynosi: " + this.data.distance + "m";
 }));
+
+console.log(waysList.length);
 
 window.addEventListener("resize", handleResize);
 function handleResize() {

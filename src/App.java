@@ -6,8 +6,7 @@ public class App {
     public static void main(String[] args) {
         Map mapData;
 
-        mapData = Map.parseMapData("big.xml");
-
+        mapData = Map.parseMapData("map.xml");
 
         mapData.filter();
 

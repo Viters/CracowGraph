@@ -1,12 +1,21 @@
 import java.util.ArrayList;
 
 /**
- * Created by sir.viters on 19.10.2016.
+ * Object of this class is ready to be saved as JSON object.
+ * It creates a structure of Node and Way objects.
+ *
+ * @author Łukasz Szcześniak
+ * @version 20161025
  */
 class JSONData {
     private ArrayList<JSONWay> ways;
     private ArrayList<JSONNode> nodes;
 
+    /**
+     * Create JSONData object based on provided Map.
+     *
+     * @param map - object that will be parsed
+     */
     JSONData(Map map) {
         ways = new ArrayList<>();
         nodes = new ArrayList<>();
